@@ -30,7 +30,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     NSLog("gotProperties")
                     NSLog("\(String(describing: properties?.title)), \(String(describing: properties?.url))")
                     if properties?.url != nil {
-                        let tweetURLString = "https://twitter.com/share?url=\((properties?.url!)!)&text=\((properties?.url!)!)"
+                        let tweetURLString = "https://twitter.com/share?url=\((properties?.url!)!)&text=\((properties?.title!)!)"
                         if let tweetURL = URL(string: tweetURLString) {
                             window.openTab(with: tweetURL, makeActiveIfPossible: true, completionHandler: nil)
                         }
