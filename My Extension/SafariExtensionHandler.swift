@@ -23,14 +23,16 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         NSLog("The extension's toolbar item was clicked")
         
         window.getActiveTab { (tab) in
-            NSLog("goActiveTab")
+            NSLog("gotActiveTab")
             tab?.getActivePage(completionHandler: { (page) in
-                NSLog("goActivePage")
+                NSLog("gotActivePage")
                 page?.getPropertiesWithCompletionHandler({ (properties) in
                     NSLog("gotProperties")
-                    NSLog("\(String(describing: properties?.title)), \(String(describing: properties?.url))")
-                    if properties?.url != nil {
-                        let tweetURLString = "https://twitter.com/share?url=\((properties?.url!)!)&text=\((properties?.title!)!)"
+                    NSLog("\(String(describing: properties?.title))")
+                    NSLog("\(String(describing: properties?.url))")
+                    if properties?.url != nil && properties?.title != nil {
+                        let escapedTitle = properties?.title?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+                        let tweetURLString = "https://twitter.com/share?url=\((properties?.url!)!)&text=\((escapedTitle)!)"
                         if let tweetURL = URL(string: tweetURLString) {
                             window.openTab(with: tweetURL, makeActiveIfPossible: true, completionHandler: nil)
                         }
